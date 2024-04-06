@@ -1,5 +1,7 @@
-CREATE DATABASE alkewallet_db;
+CREATE DATABASE alke_wallet;
 --
+-- 
+-- Se normalizo la tabla para que todos los datos esten en ingles sin caracteres especiales.
 CREATE TABLE users (
     user_id INT PRIMARY KEY NOT NULL,
     name VARCHAR(255) NOT NULL,
@@ -8,49 +10,55 @@ CREATE TABLE users (
     balance DECIMAL(10, 2) DEFAULT 0.00
 );
 --
+--
+-- Se crearon 5 usuarios como ejemplo para insertar en la tabla.
 INSERT INTO users (user_id, name, email, password, balance)
 VALUES (
         1,
         'Juan Pérez',
-        'juan@example.com',
+        'juan@alkewallet.com',
         '12345678',
         1000.00
     ),
     (
         2,
         'María López',
-        'maria@example.com',
+        'maria@alkewallet.com',
         '12345678',
         1000.00
     ),
     (
         3,
         'Carlos García',
-        'carlos@example.com',
+        'carlos@alkewallet.com',
         '12345678',
         1000.00
     ),
     (
         4,
         'Ana Rodríguez',
-        'ana@example.com',
+        'ana@alkewallet.com',
         '12345678',
         1000.00
     ),
     (
         5,
         'Luisa Martínez',
-        'luisa@example.com',
+        'luisa@alkewallet.com',
         '12345678',
         1000.00
     );
 --
+--
+-- Se normalizo la tabla para que todos los datos esten en ingles sin caracteres especiales.
 CREATE TABLE currency (
     currency_id INT PRIMARY KEY NOT NULL,
     currency_name VARCHAR(255) NOT NULL,
     currency_symbol VARCHAR(10) NOT NULL
 );
 --
+--
+-- Se crearon 5 monedas como ejemplo para insertar en la tabla.
 INSERT INTO currency (currency_id, currency_name, currency_symbol)
 VALUES (1, 'Dólar estadounidense', 'USD'),
     (2, 'Euro', 'EUR'),
@@ -58,6 +66,8 @@ VALUES (1, 'Dólar estadounidense', 'USD'),
     (4, 'Yen japonés', 'JPY'),
     (5, 'Peso mexicano', 'MXN');
 --
+--
+-- Se normalizo la tabla para que todos los datos esten en ingles sin caracteres especiales.
 CREATE TABLE transactions (
     transaction_id INT PRIMARY KEY NOT NULL,
     sender_user_id INT NOT NULL,
@@ -70,6 +80,8 @@ CREATE TABLE transactions (
     FOREIGN KEY (currency_id) REFERENCES currency(currency_id)
 );
 --
+--
+-- Se crearon 50 trasacciones como ejemplo para insertar en la tabla.
 INSERT INTO transactions (
         transaction_id,
         sender_user_id,
@@ -128,6 +140,8 @@ VALUES (1, 3, 2, 50.00, 1),
     (49, 4, 1, 60.25, 4),
     (50, 5, 2, 85.75, 5);
 --
+--
+-- Consulta para obtener el nombre de la moneda elegida por un usuario específico. (Usuario 2)
 SELECT u.name AS user,
     c.currency_name AS currency,
     c.currency_symbol AS symbol
@@ -137,14 +151,20 @@ FROM users u
     JOIN currency c ON t.transaction_id = c.currency_id
 WHERE u.user_id = 2;
 --
+--
+-- Consulta para obtener todas las transacciones registradas.
 SELECT *
 FROM transactions;
 --
+--
+-- Consulta para obtener todas las transacciones realizadas por un usuario específico. Busqueda General Usuario 2.
 SELECT *
 FROM transactions
 WHERE sender_user_id = 2
     OR receiver_user_id = 2;
 --
+--
+-- Consulta para obtener todas las transacciones realizadas por un usuario específico. Busqueda Detalle Solo Usuario 2.
 SELECT sender.name AS sender,
     receiver.name AS receiver,
     t.amount,
@@ -154,10 +174,14 @@ FROM transactions t
     JOIN users receiver ON t.receiver_user_id = receiver.user_id
 WHERE sender_user_id = 2;
 --
+--
+-- Sentencia DML para modificar el campo correo electrónico de un usuario específico. (Usuario 1)
 UPDATE users
 SET email = 'juan.nuevo@example.com'
 WHERE user_id = 1;
 --
+--
+-- Sentencia para eliminar los datos de una transacción (eliminado de la fila completa)
 DELETE FROM transactions
 WHERE transaction_id = 1;
 --
